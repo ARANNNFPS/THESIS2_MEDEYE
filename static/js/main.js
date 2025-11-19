@@ -784,10 +784,16 @@ function resizeImageIfNeeded(image, maxWidth = 1920, maxHeight = 1080) {
     const width = image.naturalWidth || image.width;
     const height = image.naturalHeight || image.height;
 
+    // Validate dimensions
+    if (!width || !height) {
+        console.error('Invalid image dimensions');
+        return null;
+    }
+
     // Check if resizing is needed
     if (width <= maxWidth && height <= maxHeight) {
         console.log(`Image size OK: ${width}x${height}`);
-        return image;
+        return null; // Return null to indicate no resizing needed
     }
 
     console.log(`Resizing image from ${width}x${height} to fit ${maxWidth}x${maxHeight}`);
@@ -814,14 +820,10 @@ function resizeImageIfNeeded(image, maxWidth = 1920, maxHeight = 1080) {
     const ctx = canvas.getContext('2d');
     ctx.drawImage(image, 0, 0, newWidth, newHeight);
 
-    // Create new image from resized canvas
-    const resizedImage = new Image();
-    resizedImage.src = canvas.toDataURL('image/jpeg', 0.92);
-    resizedImage.width = newWidth;
-    resizedImage.height = newHeight;
-
+    // Return data URL instead of Image object
+    const dataURL = canvas.toDataURL('image/jpeg', 0.92);
     console.log(`Image resized to: ${newWidth}x${newHeight}`);
-    return resizedImage;
+    return dataURL;
 }
 
 /**
@@ -1010,26 +1012,62 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log(`Uploaded file size: ${formatFileSize(file.size)}`);
 
                 const img = document.createElement('img');
-                img.src = URL.createObjectURL(file);
+                const blobURL = URL.createObjectURL(file);
+
                 img.onload = () => {
-                    URL.revokeObjectURL(img.src);
+                    console.log('Original image loaded, dimensions:', img.naturalWidth, 'x', img.naturalHeight);
 
                     // Resize image if needed to improve performance
-                    const optimizedImage = resizeImageIfNeeded(img);
+                    const resizedDataURL = resizeImageIfNeeded(img);
 
-                    // Wait for optimized image to load before showing preview
-                    if (optimizedImage !== img) {
-                        // Image was resized, wait for the new data URL to load
-                        optimizedImage.onload = () => {
-                            uploadedImage = optimizedImage;
-                            displayPreview(optimizedImage);
+                    if (resizedDataURL) {
+                        console.log('Image was resized, creating new image from data URL');
+                        // Image was resized, create new Image and attach onload BEFORE setting src
+                        const resizedImg = new Image();
+
+                        // Set up timeout for image loading
+                        const timeoutId = setTimeout(() => {
+                            console.error('Resized image loading timeout');
+                            showPreviewError('Image preview failed to load');
+                        }, 5000);
+
+                        // Attach onload handler BEFORE setting src to avoid race condition
+                        resizedImg.onload = () => {
+                            clearTimeout(timeoutId);
+                            console.log('Resized image loaded successfully');
+                            uploadedImage = resizedImg;
+                            displayPreview(resizedImg);
                         };
+
+                        // Attach error handler
+                        resizedImg.onerror = () => {
+                            clearTimeout(timeoutId);
+                            console.error('Failed to load resized image');
+                            showPreviewError('Failed to process image');
+                        };
+
+                        // Now set the src (onload is already attached)
+                        resizedImg.src = resizedDataURL;
                     } else {
-                        // Image wasn't resized, display immediately
-                        uploadedImage = optimizedImage;
-                        displayPreview(optimizedImage);
+                        console.log('Image does not need resizing, displaying original');
+                        // Image wasn't resized, display original immediately
+                        uploadedImage = img;
+                        displayPreview(img);
                     }
+
+                    // Clean up blob URL after processing
+                    URL.revokeObjectURL(blobURL);
                 };
+
+                // Add error handler for initial image load
+                img.onerror = () => {
+                    URL.revokeObjectURL(blobURL);
+                    console.error('Failed to load uploaded image');
+                    showPreviewError('Failed to load image file');
+                };
+
+                // Set src after attaching handlers
+                img.src = blobURL;
                 uploadPreview.classList.remove('hidden');
             } else {
                 uploadPreview.classList.add('hidden');
@@ -1047,6 +1085,17 @@ document.addEventListener('DOMContentLoaded', function() {
         previewImg.style.maxHeight = '180px';
         previewImg.id = 'uploadedImagePreview';
         uploadPreview.appendChild(previewImg);
+    }
+
+    // Helper function to show preview error
+    function showPreviewError(message) {
+        uploadPreview.innerHTML = '';
+        const errorDiv = document.createElement('div');
+        errorDiv.style.color = '#e74c3c';
+        errorDiv.style.padding = '10px';
+        errorDiv.style.textAlign = 'center';
+        errorDiv.textContent = message;
+        uploadPreview.appendChild(errorDiv);
     }
 
     // --- Scan Button & Loading ---

@@ -8,17 +8,22 @@
   --color-muted: #6b7d93;
   --nav-height: 64px;
 }
+* {
+  box-sizing: border-box;
+}
 html, body {
   height: 100%;
 }
 body {
   margin: 0;
+  padding: 0;
   font-family: 'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif;
   background: var(--color-bg);
   color: var(--color-text);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 .navbar {
   height: var(--nav-height);
@@ -28,6 +33,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 0 2rem;
+  box-sizing: border-box;
 }
 .logo {
   font-weight: bold;

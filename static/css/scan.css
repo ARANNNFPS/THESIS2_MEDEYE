@@ -9,14 +9,19 @@
   --color-text: #333333;
   --color-card: #ffffff;
 }
+* {
+  box-sizing: border-box;
+}
 body {
   background: var(--color-bg);
   margin: 0;
+  padding: 0;
   font-family: 'Poppins', 'Open Sans', Arial, sans-serif;
   color: var(--color-text);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 /* ------ Navbar ------ */
 .navbar {
@@ -31,6 +36,7 @@ body {
   justify-content: space-between;
   height: 64px;
   padding: 0 2rem;
+  box-sizing: border-box;
 }
 .logo {
   color: var(--color-primary);
