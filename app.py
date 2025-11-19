@@ -459,4 +459,8 @@ def get_medicine_by_id(medicine_id):
 
 if __name__ == '__main__':
     # For development only - use a proper WSGI server for production
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # Railway (and other cloud platforms) provide PORT via environment variable
+    import os
+    port = int(os.environ.get('PORT', 5000))
+    debug = os.environ.get('FLASK_ENV', 'development') == 'development'
+    app.run(debug=debug, host='0.0.0.0', port=port)
