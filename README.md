@@ -1,4 +1,4 @@
-# MediWeb - Medicine Detection Web Application
+# MedEye - Medicine Detection Web Application
 
 A web application that uses TensorFlow.js and YOLO object detection to identify medicines from images captured via webcam or uploaded files.
 

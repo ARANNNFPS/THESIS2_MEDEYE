@@ -1,7 +1,7 @@
-// Service Worker for MediWeb
+// Service Worker for MedEye
 // Caches YOLO model files for faster loading on subsequent visits
 
-const CACHE_NAME = 'mediweb-model-cache-v1';
+const CACHE_NAME = 'medeye-model-cache-v1';
 const MODEL_FILES = [
     '/static/model.json',
     '/static/group1-shard1of11.bin',

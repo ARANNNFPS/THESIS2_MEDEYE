@@ -1,4 +1,4 @@
-// main.js – JS for all MediWeb page interactivity
+// main.js – JS for all MedEye page interactivity
 
 // ============================================
 // YOLO Model Configuration

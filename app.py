@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MediWeb Flask Backend
+MedEye Flask Backend
 Handles API endpoints for medicine detection and information retrieval
 """
 
