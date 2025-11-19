@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediWeb | Scan Medicine</title>
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js" as="script">
+    <link rel="preload" href="/static/js/main.js" as="script">
+    <link rel="preload" href="/static/model.json" as="fetch" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="/static/css/scan.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">MediWeb</div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li class="active"><a href="/scan">Scan</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+    <main class="scan-main">
+        <h1>Scan or Upload a Medicine Image</h1>
+        <div class="model-status loading">⏳ Model Loading...</div>
+        <div class="scan-cards">
+            <!-- Camera Card -->
+            <section class="card">
+                <h2>Use Camera</h2>
+                <button id="openCamera" class="btn btn-secondary">Open Camera</button>
+                <div id="cameraContainer" class="camera-preview hidden">
+                    <video id="video" autoplay playsinline></video>
+                    <button id="captureBtn" class="btn btn-primary">Capture</button>
+                </div>
+                <canvas id="snapshot" class="hidden"></canvas>
+                <div id="cameraError" class="error-message"></div>
+            </section>
+            <!-- Upload Card -->
+            <section class="card">
+                <h2>Upload Image</h2>
+                <input type="file" id="fileInput" accept="image/*">
+                <div id="uploadPreview" class="image-preview hidden"></div>
+                <button id="scanBtn" class="btn btn-primary">Scan</button>
+                <div id="loadingAnim" class="loading hidden">Scanning...</div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Scanning Progress Modal -->
+    <div id="scanningModal" class="modal hidden">
+        <div class="modal-content scanning-modal">
+            <div class="scanning-animation">
+                <div class="scanner-pulse"></div>
+                <div class="scanner-icon">🔍</div>
+            </div>
+            <h2 id="scanningTitle">Analyzing Medicine</h2>
+            <div class="progress-steps">
+                <div class="step" id="step1">
+                    <div class="step-icon">📸</div>
+                    <span class="step-text">Processing image...</span>
+                </div>
+                <div class="step" id="step2">
+                    <div class="step-icon">🤖</div>
+                    <span class="step-text">Running AI detection...</span>
+                </div>
+                <div class="step" id="step3">
+                    <div class="step-icon">💊</div>
+                    <span class="step-text">Identifying medicine...</span>
+                </div>
+                <div class="step" id="step4">
+                    <div class="step-icon">📋</div>
+                    <span class="step-text">Retrieving information...</span>
+                </div>
+            </div>
+            <p class="scanning-tip">Please wait, this may take a few seconds...</p>
+        </div>
+    </div>
+
+    <!-- Age Input Modal -->
+    <div id="ageModal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Enter Your Age</h2>
+            <p>To provide personalized dosage information, please enter your age:</p>
+            <div class="age-input-container">
+                <input type="number" id="ageInput" min="0" max="120" placeholder="Enter age" required>
+                <span class="age-unit">years</span>
+            </div>
+            <div id="ageError" class="error-message"></div>
+            <div class="modal-buttons">
+                <button id="submitAge" class="btn btn-primary">Continue</button>
+                <button id="cancelAge" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 MediWeb. All rights reserved.</p>
+        <small>For informational purposes only. Always consult a healthcare professional.</small>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+
+</html>

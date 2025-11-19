@@ -1,0 +1,209 @@
+/* =============================
+   MediWeb Results Page (results.css)
+   ============================= */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+:root {
+  --color-bg: #f9fdfb;
+  --color-primary: #0a8ea0;
+  --color-accent: #4cc9b0;
+  --color-text: #333333;
+  --color-card: #ffffff;
+}
+body {
+  background: var(--color-bg);
+  margin: 0;
+  font-family: 'Poppins', 'Open Sans', Arial, sans-serif;
+  color: var(--color-text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+/* ------ Navbar ------ */
+.navbar {
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 2px 14px rgba(10,142,160,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  padding: 0 2rem;
+}
+.logo {
+  color: var(--color-primary);
+  font-weight: 600;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+}
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+}
+.nav-links a {
+  text-decoration: none;
+  color: var(--color-text);
+  font-weight: 500;
+  font-size: 1.09rem;
+  position: relative;
+  transition: color 0.2s;
+}
+.nav-links .active a,
+.nav-links a:hover {
+  color: var(--color-primary);
+}
+.nav-links .active a:after,
+.nav-links a:hover:after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: var(--color-primary);
+  border-radius: 1px;
+  position: absolute;
+  left: 0; right: 0; bottom: -4px;
+  opacity: 0.21;
+}
+/* ------ Main Results Layout ------ */
+.results-main {
+  flex: 1 1 auto;
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 3.2rem 0.7rem 2.7rem;
+}
+.results-main h1 {
+  text-align: center;
+  color: var(--color-primary);
+  font-weight: 600;
+  font-size: 2.04rem;
+  margin-bottom: 2.1rem;
+  letter-spacing: 0.01em;
+}
+.results-card {
+  border-radius: 16px;
+  padding: 2rem 1.4rem 1.6rem;
+  box-shadow: 0 6px 32px rgba(10,142,160,0.12), 0 1.5px 3px rgba(0,0,0,0.02);
+  background: var(--color-card);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2.3rem;
+}
+.results-card h2 {
+  color: var(--color-primary);
+  margin-top: 0;
+  font-weight: 600;
+}
+.result-section {
+  background: #f6fff9;
+  border-radius: 11px;
+  padding: 1.1rem 1rem;
+  border-left: 5px solid var(--color-accent);
+  box-shadow: 0 2px 12px rgba(76,201,176,0.05);
+  margin-bottom: 0.3rem;
+  transition: background 0.3s;
+}
+.result-section h3 {
+  color: var(--color-accent);
+  font-weight: 500;
+  margin: 0 0 0.41rem 0;
+  font-size: 1.09rem;
+}
+.result-section p {
+  margin: 0;
+  color: #3b5e5e;
+  font-size: 1.01rem;
+}
+
+/* ------ Personalized Dosage Section ------ */
+#personalizedDosageSection {
+  background: linear-gradient(135deg, #e8f9f5 0%, #f0fcf8 100%);
+  border-left: 5px solid var(--color-primary);
+  box-shadow: 0 4px 20px rgba(10, 142, 160, 0.15);
+  animation: fadeInGlow 0.5s ease-out;
+}
+@keyframes fadeInGlow {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+#personalizedDosageSection h3 {
+  color: var(--color-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.personalized-dosage {
+  background: white;
+  padding: 1.2rem;
+  border-radius: 8px;
+  color: #2d4a4a;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  border: 2px solid #d0f0e8;
+  box-shadow: inset 0 2px 4px rgba(76, 201, 176, 0.05);
+}
+
+/* ------ Action Button ------ */
+.btn {
+  margin: 2rem auto 0.4rem;
+  display: block;
+  border: none;
+  border-radius: 27px;
+  padding: 10px 38px;
+  font-size: 1.14rem;
+  font-weight: 500;
+  background: var(--color-primary);
+  color: #fff;
+  box-shadow: 0 3px 14px rgba(76,201,176,0.11);
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s, transform 0.22s;
+}
+.btn-secondary { background: var(--color-accent); }
+.btn:hover, .btn-secondary:hover {
+  background: #08788b;
+  transform: translateY(-2px) scale(1.02);
+}
+/* ------ Footer ------ */
+.footer {
+  background: #fff;
+  padding: 2rem 1rem 1rem;
+  text-align: center;
+  color: #7fa5aa;
+  font-size: 1rem;
+  margin-top: auto;
+  border-top: 1.5px solid #e2efe9;
+}
+.footer small {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.93rem;
+  color: #b4cbc8;
+}
+/* =============================
+   Responsive Improvements (Results)
+   ============================= */
+@media (max-width: 1024px) {
+  .results-main { max-width: 93vw; padding: 2rem 0.2rem 1.2rem; }
+  .results-card { padding: 1.1rem 0.5rem 1.1rem; }
+}
+@media (max-width: 768px) {
+  .navbar { flex-direction: column; height: auto; align-items: flex-start; padding: 0.6rem 0.2rem; }
+  .nav-links { flex-direction: column; gap: 0.6rem; width: 100%; margin-top: 0.45rem; }
+  .logo { margin-bottom: 0.7rem; }
+  .results-main h1 { font-size: 1.15rem; }
+  .results-card { padding: 0.6rem 0.09rem 0.6rem; }
+  .result-section { font-size: 0.99rem; padding: 0.8rem 0.6rem; }
+}
+@media (max-width: 480px) {
+  .navbar { padding: 0 0.13rem; }
+  .logo { font-size: 1.19rem; }
+  .footer { font-size: 0.88rem; padding: 1.1rem 0.05rem 0.7rem; }
+}

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediWeb | Results</title>
+    <link rel="stylesheet" href="/static/css/results.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">MediWeb</div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/scan">Scan</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+    <main class="results-main">
+        <h1>Medicine Results</h1>
+        <div class="results-card card">
+            <!-- Flask: Insert recognized medicine data here -->
+            <h2 id="medicineName">Medicine Name</h2>
+            <p id="manufacturer" style="color: #666; font-size: 0.9em; margin-top: -10px;">--</p>
+
+            <div class="result-section">
+                <h3>Medical Use</h3>
+                <p id="usage">--</p>
+            </div>
+            <div class="result-section" id="personalizedDosageSection" style="display: none;">
+                <h3>💊 Your Personalized Dosage</h3>
+                <div id="personalizedDosage" class="personalized-dosage">--</div>
+            </div>
+            <div class="result-section">
+                <h3>General Dosage Guidelines</h3>
+                <p id="dosage">--</p>
+            </div>
+            <div class="result-section">
+                <h3>Warnings & Side Effects</h3>
+                <p id="sideEffects">--</p>
+            </div>
+            <div class="result-section">
+                <h3>Additional Information</h3>
+                <p id="misconceptions">--</p>
+            </div>
+            <div class="result-section" id="legalStatusSection" style="display: none;">
+                <h3>Legal Status</h3>
+                <p id="legalStatus">--</p>
+            </div>
+            <!-- Flask: populate above sections from backend in future -->
+            <a href="/scan" class="btn btn-secondary">Scan Another</a>
+        </div>
+    </main>
+    <footer class="footer">
+        <p>&copy; 2025 MediWeb. All rights reserved.</p>
+        <small>For informational purposes only. Always consult a healthcare professional.</small>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
+    <script src="/static/js/main.js"></script>
+    <script>
+        // Load and display medicine results from sessionStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const resultData = sessionStorage.getItem('medicineResult');
+
+            if (resultData) {
+                try {
+                    const result = JSON.parse(resultData);
+
+                    // Update DOM elements with result data
+                    const medicineNameEl = document.getElementById('medicineName');
+                    const manufacturerEl = document.getElementById('manufacturer');
+                    const usageEl = document.getElementById('usage');
+                    const dosageEl = document.getElementById('dosage');
+                    const sideEffectsEl = document.getElementById('sideEffects');
+                    const misconceptionsEl = document.getElementById('misconceptions');
+                    const legalStatusEl = document.getElementById('legalStatus');
+                    const legalStatusSection = document.getElementById('legalStatusSection');
+
+                    if (medicineNameEl) {
+                        medicineNameEl.textContent = result.medicine || 'Unknown Medicine';
+                    }
+
+                    // Show manufacturer if available
+                    if (manufacturerEl && result.manufacturer) {
+                        manufacturerEl.textContent = `Manufactured by: ${result.manufacturer}`;
+                    }
+
+                    if (usageEl) {
+                        usageEl.textContent = result.usage || 'No usage information available.';
+                    }
+
+                    // Show personalized dosage if available
+                    const personalizedDosageEl = document.getElementById('personalizedDosage');
+                    const personalizedDosageSection = document.getElementById('personalizedDosageSection');
+
+                    if (result.personalizedDosage && personalizedDosageEl && personalizedDosageSection) {
+                        personalizedDosageEl.textContent = result.personalizedDosage;
+                        personalizedDosageSection.style.display = 'block';
+
+                        // Add age badge if available
+                        if (result.userAge !== undefined && result.userAge !== null) {
+                            const ageBadge = document.createElement('span');
+                            ageBadge.style.fontSize = '0.85em';
+                            ageBadge.style.backgroundColor = '#4cc9b0';
+                            ageBadge.style.color = 'white';
+                            ageBadge.style.padding = '4px 10px';
+                            ageBadge.style.borderRadius = '4px';
+                            ageBadge.style.marginLeft = '10px';
+                            ageBadge.textContent = `Age: ${result.userAge}`;
+                            personalizedDosageSection.querySelector('h3').appendChild(ageBadge);
+                        }
+                    }
+
+                    // Show dosage if available (separate from usage)
+                    if (dosageEl && result.dosage) {
+                        dosageEl.textContent = result.dosage;
+                    } else if (dosageEl) {
+                        dosageEl.textContent = 'No dosage information available.';
+                    }
+
+                    if (sideEffectsEl) {
+                        sideEffectsEl.textContent = result.sideEffects || 'No side effects information available.';
+                    }
+
+                    if (misconceptionsEl) {
+                        misconceptionsEl.textContent = result.misconceptions || 'No additional information available.';
+                    }
+
+                    // Show legal status if available
+                    if (result.legalStatus && legalStatusEl && legalStatusSection) {
+                        legalStatusEl.textContent = result.legalStatus;
+                        legalStatusSection.style.display = 'block';
+                    }
+
+                    // Add confidence score if available
+                    if (result.confidence && medicineNameEl) {
+                        const confidenceText = document.createElement('span');
+                        confidenceText.style.fontSize = '0.8em';
+                        confidenceText.style.color = '#666';
+                        confidenceText.style.marginLeft = '10px';
+                        confidenceText.textContent = `(${(result.confidence * 100).toFixed(1)}% confidence)`;
+                        medicineNameEl.appendChild(confidenceText);
+                    }
+
+                    // Add prescription badge if required
+                    if (result.prescriptionRequired && medicineNameEl) {
+                        const prescriptionBadge = document.createElement('span');
+                        prescriptionBadge.style.fontSize = '0.75em';
+                        prescriptionBadge.style.backgroundColor = '#ff6b6b';
+                        prescriptionBadge.style.color = 'white';
+                        prescriptionBadge.style.padding = '3px 8px';
+                        prescriptionBadge.style.borderRadius = '4px';
+                        prescriptionBadge.style.marginLeft = '10px';
+                        prescriptionBadge.textContent = 'Rx Required';
+                        medicineNameEl.appendChild(prescriptionBadge);
+                    }
+
+                } catch (error) {
+                    console.error('Error parsing medicine result:', error);
+                    document.getElementById('medicineName').textContent = 'Error Loading Results';
+                    document.getElementById('usage').textContent = 'There was an error loading the detection results. Please try scanning again.';
+                }
+            } else {
+                // No result data found
+                document.getElementById('medicineName').textContent = 'No Results Available';
+                document.getElementById('usage').textContent = 'Please scan a medicine image first.';
+            }
+        });
+    </script>
+</body>
+
+</html>

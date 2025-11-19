@@ -1,0 +1,21 @@
+description: Ultralytics best model trained on /content/trained/data.yaml
+author: Ultralytics
+date: '2025-11-14T02:12:07.669886'
+version: 8.3.228
+license: AGPL-3.0 License (https://ultralytics.com/license)
+docs: https://docs.ultralytics.com
+stride: 32
+task: detect
+batch: 1
+imgsz:
+- 640
+- 640
+names:
+  0: biogesic-para
+  1: ritemed-para
+args:
+  batch: 1
+  half: false
+  int8: false
+  nms: false
+channels: 3
