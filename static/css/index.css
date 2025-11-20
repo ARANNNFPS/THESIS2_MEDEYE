@@ -31,7 +31,7 @@ body {
 }
 
 /* =====================
-   Navbar
+   Navbar - Responsive
    ===================== */
 .navbar {
     width: 100%;
@@ -43,38 +43,45 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 64px;
-    padding: 0 2rem;
+    padding: 0.75rem 1rem;
     box-sizing: border-box;
+    min-height: 60px;
+    gap: 1rem;
     transition: box-shadow 0.3s;
 }
 
 .logo {
     color: var(--color-primary);
     font-weight: 600;
-    font-size: 1.8rem;
+    font-size: clamp(1.3rem, 4vw, 1.8rem);
     letter-spacing: 1px;
+    flex-shrink: 0;
 }
 
 .nav-links {
     display: flex;
-    gap: 2rem;
+    gap: clamp(0.75rem, 2vw, 2rem);
     list-style: none;
     margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .nav-links li {
-    display: inline;
+    display: inline-block;
 }
 
 .nav-links a {
     text-decoration: none;
     color: var(--color-text);
     font-weight: 500;
-    font-size: 1.09rem;
+    font-size: clamp(0.9rem, 2vw, 1.09rem);
     position: relative;
-    padding: 3px 0;
+    padding: 0.25rem 0;
     transition: color 0.2s;
+    white-space: nowrap;
 }
 
 .nav-links .active a,
@@ -92,7 +99,7 @@ body {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -4px;
+    bottom: -2px;
     opacity: 0.24;
 }
 
@@ -519,21 +526,21 @@ body {
 
 @media (max-width: 768px) {
     .navbar {
-        flex-direction: column;
-        height: auto;
-        align-items: flex-start;
-        padding: 0.5rem 0.7rem;
-    }
-
-    .nav-links {
-        flex-direction: column;
-        gap: 0.7rem;
-        width: 100%;
-        margin-top: 0.5rem;
+        padding: 0.65rem 0.75rem;
+        min-height: 56px;
     }
 
     .logo {
-        margin-bottom: 0.7rem;
+        font-size: 1.3rem;
+    }
+
+    .nav-links {
+        gap: 0.65rem;
+    }
+
+    .nav-links a {
+        font-size: 0.85rem;
+        padding: 0.2rem 0;
     }
 
     .hero {
@@ -622,11 +629,21 @@ body {
 
 @media (max-width: 480px) {
     .navbar {
-        padding: 0.5rem;
+        padding: 0.6rem 0.5rem;
+        min-height: 52px;
     }
 
     .logo {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
+        letter-spacing: 0.5px;
+    }
+
+    .nav-links {
+        gap: 0.5rem;
+    }
+
+    .nav-links a {
+        font-size: 0.8rem;
     }
 
     .hero {
