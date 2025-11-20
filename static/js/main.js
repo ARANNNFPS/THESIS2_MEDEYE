@@ -441,8 +441,16 @@ async function detectMedicineWithWorker(imageElement) {
     return new Promise((resolve, reject) => {
         // Create canvas to get image data
         const canvas = document.createElement('canvas');
-        canvas.width = imageElement.width || imageElement.naturalWidth;
-        canvas.height = imageElement.height || imageElement.naturalHeight;
+        canvas.width = imageElement.naturalWidth || imageElement.width;
+        canvas.height = imageElement.naturalHeight || imageElement.height;
+
+        console.log('[Worker] Image dimensions:', canvas.width, 'x', canvas.height);
+
+        if (!canvas.width || !canvas.height) {
+            reject(new Error('Invalid image dimensions'));
+            return;
+        }
+
         const ctx = canvas.getContext('2d');
         ctx.drawImage(imageElement, 0, 0);
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -484,6 +492,15 @@ async function detectMedicineMainThread(imageElement) {
     // Load model if not already loaded
     const model = await loadYOLOModel();
 
+    const imgWidth = imageElement.naturalWidth || imageElement.width;
+    const imgHeight = imageElement.naturalHeight || imageElement.height;
+
+    console.log('[Main Thread] Processing image:', imgWidth, 'x', imgHeight);
+
+    if (!imgWidth || !imgHeight) {
+        throw new Error('Invalid image dimensions for detection');
+    }
+
     // Preprocess image
     const inputTensor = preprocessImage(imageElement, MODEL_CONFIG.inputSize);
 
@@ -493,8 +510,8 @@ async function detectMedicineMainThread(imageElement) {
     // Process output
     const detections = await processYOLOOutput(
         Array.isArray(predictions) ? predictions : [predictions],
-        imageElement.width,
-        imageElement.height
+        imgWidth,
+        imgHeight
     );
 
     // Clean up tensors
@@ -897,6 +914,32 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // FAQ Accordion functionality (for homepage)
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', function() {
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+            // Close all other FAQ items
+            faqQuestions.forEach(otherQuestion => {
+                if (otherQuestion !== this) {
+                    otherQuestion.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Toggle current FAQ item
+            this.setAttribute('aria-expanded', !isExpanded);
+        });
+
+        // Keyboard accessibility
+        question.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.click();
+            }
+        });
+    });
+
     // Preload model on scan page for faster detection
     preloadModel();
 
@@ -906,34 +949,129 @@ document.addEventListener('DOMContentLoaded', function() {
     const video = document.getElementById('video');
     const captureBtn = document.getElementById('captureBtn');
     const snapshot = document.getElementById('snapshot');
+    const snapshotContainer = document.getElementById('snapshotContainer');
+    const retakeBtn = document.getElementById('retakeBtn');
+    const scanCameraBtn = document.getElementById('scanCameraBtn');
     const cameraError = document.getElementById('cameraError');
 
     let mediaStream = null;
+    let capturedImage = null;
 
     if (openCameraBtn) {
         openCameraBtn.addEventListener('click', async function() {
             cameraError.textContent = '';
-            snapshot.classList.add('hidden');
+            snapshotContainer.classList.add('hidden');
             cameraContainer.classList.remove('hidden');
             if (mediaStream) return; // already open
             try {
-                mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
+                // Request higher quality video for better detection
+                const constraints = {
+                    video: {
+                        width: { ideal: 1920 },
+                        height: { ideal: 1080 },
+                        facingMode: 'environment', // Use back camera on mobile
+                        aspectRatio: { ideal: 16/9 }
+                    }
+                };
+
+                mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
                 video.srcObject = mediaStream;
                 video.play();
+
+                // Log actual video resolution
+                video.addEventListener('loadedmetadata', () => {
+                    console.log('Camera resolution:', video.videoWidth, 'x', video.videoHeight);
+                }, { once: true });
             } catch (error) {
+                console.error('Camera error:', error);
                 cameraError.textContent = 'Camera access denied. Please enable camera permissions.';
                 cameraContainer.classList.add('hidden');
             }
         });
     }
+
+    // Capture Photo Button - Just captures and shows the photo
     if (captureBtn) {
-        captureBtn.addEventListener('click', async function() {
+        captureBtn.addEventListener('click', function() {
             if (!video.srcObject) return;
 
             try {
-                captureBtn.disabled = true;
+                // Capture the photo
+                const width = video.videoWidth;
+                const height = video.videoHeight;
+                snapshot.width = width;
+                snapshot.height = height;
+                const ctx = snapshot.getContext('2d');
 
-                // FIRST: Get age from user before scanning
+                // Use higher quality settings for better detection
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                ctx.drawImage(video, 0, 0, width, height);
+
+                // Create an image element and store it
+                capturedImage = new Image();
+                capturedImage.src = snapshot.toDataURL('image/jpeg', 0.95);
+
+                // Show snapshot, hide camera
+                cameraContainer.classList.add('hidden');
+                snapshotContainer.classList.remove('hidden');
+
+                // Stop camera stream to free resources
+                if (mediaStream) {
+                    mediaStream.getTracks().forEach(track => track.stop());
+                    mediaStream = null;
+                }
+
+                console.log('Photo captured successfully');
+            } catch (error) {
+                console.error('Error capturing photo:', error);
+                cameraError.textContent = 'Failed to capture photo. Please try again.';
+            }
+        });
+    }
+
+    // Retake Button - Goes back to camera
+    if (retakeBtn) {
+        retakeBtn.addEventListener('click', async function() {
+            snapshotContainer.classList.add('hidden');
+            cameraContainer.classList.remove('hidden');
+            capturedImage = null;
+
+            // Restart camera
+            try {
+                const constraints = {
+                    video: {
+                        width: { ideal: 1920 },
+                        height: { ideal: 1080 },
+                        facingMode: 'environment',
+                        aspectRatio: { ideal: 16/9 }
+                    }
+                };
+
+                mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+                video.srcObject = mediaStream;
+                video.play();
+            } catch (error) {
+                console.error('Camera error:', error);
+                cameraError.textContent = 'Camera access denied. Please enable camera permissions.';
+                cameraContainer.classList.add('hidden');
+            }
+        });
+    }
+
+    // Scan Photo Button - Starts the detection process
+    if (scanCameraBtn) {
+        scanCameraBtn.addEventListener('click', async function() {
+            if (!capturedImage) {
+                cameraError.textContent = 'No photo captured. Please capture a photo first.';
+                return;
+            }
+
+            try {
+                scanCameraBtn.disabled = true;
+                retakeBtn.disabled = true;
+
+                // FIRST: Get age from user
                 const age = await showAgeModal();
 
                 // NOW: Start scanning process
@@ -944,33 +1082,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Step 1: Processing image
                 updateScanningStep(1);
-                const width = video.videoWidth;
-                const height = video.videoHeight;
-                snapshot.width = width;
-                snapshot.height = height;
-                const ctx = snapshot.getContext('2d');
-                ctx.drawImage(video, 0, 0, width, height);
 
-                // Create an image element for detection
-                const img = new Image();
-                img.width = width;
-                img.height = height;
-                img.src = snapshot.toDataURL('image/jpeg', 0.85);
+                // Wait for captured image to fully load if not already
+                if (!capturedImage.complete) {
+                    await new Promise((resolve, reject) => {
+                        capturedImage.onload = resolve;
+                        capturedImage.onerror = () => reject(new Error('Failed to load captured image'));
+                    });
+                }
 
-                await new Promise((resolve) => {
-                    img.onload = resolve;
-                });
+                console.log('Camera image ready for detection:', capturedImage.naturalWidth, 'x', capturedImage.naturalHeight);
 
                 // Step 2: Running AI detection
                 updateScanningStep(2);
                 console.log('Running YOLO detection on camera image...');
-                const detections = await detectMedicine(img);
+                const detections = await detectMedicine(capturedImage);
                 console.log('Detections found:', detections);
 
                 // Step 3: Identifying medicine
                 updateScanningStep(3);
+                const width = capturedImage.naturalWidth;
+                const height = capturedImage.naturalHeight;
                 drawBoundingBoxes(snapshot, detections, width, height);
-                snapshot.classList.remove('hidden');
 
                 // Step 4: Retrieving information from backend
                 updateScanningStep(4);
@@ -984,11 +1117,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.href = '/results';
 
             } catch (error) {
-                console.error('Error during capture and detection:', error);
+                console.error('Error during detection:', error);
                 cameraError.textContent = `Detection error: ${error.message}`;
                 hideScanningModal();
             } finally {
-                captureBtn.disabled = false;
+                scanCameraBtn.disabled = false;
+                retakeBtn.disabled = false;
             }
         });
     }

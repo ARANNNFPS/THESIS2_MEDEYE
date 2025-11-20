@@ -31,12 +31,27 @@
             <!-- Camera Card -->
             <section class="card">
                 <h2>Use Camera</h2>
+                <div class="camera-tips">
+                    <p><strong>📸 Tips for best results:</strong></p>
+                    <ul>
+                        <li>Ensure good lighting</li>
+                        <li>Hold camera steady</li>
+                        <li>Center the medicine package</li>
+                        <li>Keep text clearly visible</li>
+                    </ul>
+                </div>
                 <button id="openCamera" class="btn btn-secondary">Open Camera</button>
                 <div id="cameraContainer" class="camera-preview hidden">
                     <video id="video" autoplay playsinline></video>
-                    <button id="captureBtn" class="btn btn-primary">Capture</button>
+                    <button id="captureBtn" class="btn btn-primary">Capture Photo</button>
                 </div>
-                <canvas id="snapshot" class="hidden"></canvas>
+                <div id="snapshotContainer" class="hidden">
+                    <canvas id="snapshot"></canvas>
+                    <div class="snapshot-actions">
+                        <button id="retakeBtn" class="btn btn-secondary">Retake</button>
+                        <button id="scanCameraBtn" class="btn btn-primary">Scan Photo</button>
+                    </div>
+                </div>
                 <div id="cameraError" class="error-message"></div>
             </section>
             <!-- Upload Card -->

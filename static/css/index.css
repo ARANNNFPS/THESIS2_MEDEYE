@@ -106,48 +106,67 @@ body {
     justify-content: center;
     min-height: 60vh;
     padding: 4.5rem 1.5rem 3rem;
-    background: linear-gradient(135deg, #e7fff6 0%, #f9fdfb 100%);
+    background: linear-gradient(135deg, #E3F2FD 0%, #E8F5E9 100%);
     text-align: center;
 }
 
-.hero h1 {
-    font-size: 2.8rem;
-    color: var(--color-primary);
-    font-weight: 600;
-    margin: 0 0 1.1rem;
-    letter-spacing: 0.04em;
-    line-height: 1.1;
+.hero-content {
+    max-width: 700px;
+    margin: 0 auto;
 }
 
-.tagline {
-    color: #599294;
-    font-size: 1.17rem;
-    margin-bottom: 2.5rem;
-    max-width: 600px;
+.hero h1 {
+    font-size: 2.5rem;
+    color: var(--color-primary);
+    font-weight: 600;
+    margin: 0 0 1.5rem;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+}
+
+.hero-text {
+    color: #5a6c7d;
+    font-size: 1.125rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
 }
 
 .btn {
+    display: inline-block;
     background: var(--color-accent);
     color: #fff;
     border: none;
     border-radius: 30px;
-    font-size: 1.22rem;
+    font-size: 1.125rem;
     font-family: inherit;
     font-weight: 500;
-    padding: 13px 38px;
-    box-shadow: 0 2px 10px rgba(76, 201, 176, 0.09);
+    padding: 14px 40px;
+    box-shadow: 0 4px 12px rgba(76, 201, 176, 0.2);
     cursor: pointer;
-    margin-top: 10px;
-    transition: background 0.3s, box-shadow 0.3s, transform 0.26s;
+    text-decoration: none;
+    transition: all 0.3s ease;
 }
 
 .btn-primary {
     background: var(--color-primary);
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
 }
 
 .btn-primary:hover {
     background: #08788b;
-    transform: translateY(-2px) scale(1.032);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(74, 144, 226, 0.4);
+}
+
+.btn-secondary {
+    background: #7ED995;
+    box-shadow: 0 4px 12px rgba(126, 217, 149, 0.3);
+}
+
+.btn-secondary:hover {
+    background: #5fc97a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(126, 217, 149, 0.4);
 }
 
 .btn:hover {
@@ -155,22 +174,321 @@ body {
 }
 
 /* =====================
+   Container
+   ===================== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* =====================
+   Section Title
+   ===================== */
+.section-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+/* =====================
+   Purpose Section
+   ===================== */
+.purpose-section {
+    padding: 4rem 0;
+    background: #fff;
+}
+
+.purpose-content {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: left;
+}
+
+.purpose-icon {
+    flex-shrink: 0;
+}
+
+.purpose-text {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: #5a6c7d;
+    margin: 0;
+}
+
+/* =====================
+   How It Works Section
+   ===================== */
+.how-it-works {
+    padding: 4rem 0;
+    background: #F5F7FA;
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.step-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.step-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.step-icon {
+    margin-bottom: 1.5rem;
+}
+
+.step-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    margin: 0 0 0.75rem;
+}
+
+.step-description {
+    font-size: 1rem;
+    color: #5a6c7d;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.steps-note {
+    text-align: center;
+    font-size: 0.95rem;
+    color: #7fa5aa;
+    font-style: italic;
+    margin-top: 1.5rem;
+}
+
+/* =====================
+   Supported Medicines Section
+   ===================== */
+.supported-medicines {
+    padding: 4rem 0;
+    background: #fff;
+}
+
+.medicines-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.medicine-card {
+    background: #F5F7FA;
+    border: 1px solid #e0e6ed;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.medicine-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 4px 12px rgba(76, 201, 176, 0.15);
+    transform: translateY(-2px);
+}
+
+.medicine-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #4A90E2 0%, #7ED995 100%);
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+}
+
+.medicine-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0;
+}
+
+/* =====================
+   Feedback Matters Section
+   ===================== */
+.feedback-matters {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, #E8F5E9 0%, #E3F2FD 100%);
+}
+
+.feedback-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.feedback-icon {
+    flex-shrink: 0;
+}
+
+.feedback-text {
+    flex: 1;
+}
+
+.feedback-text .section-title {
+    text-align: left;
+    margin-bottom: 1rem;
+}
+
+.feedback-text p {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: #5a6c7d;
+    margin: 0;
+}
+
+/* =====================
+   FAQ Section
+   ===================== */
+.faq-section {
+    padding: 4rem 0;
+    background: #fff;
+}
+
+.faq-list {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    border: 1px solid #e0e6ed;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.faq-question {
+    width: 100%;
+    background: #F5F7FA;
+    border: none;
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s ease;
+    font-family: inherit;
+}
+
+.faq-question:hover {
+    background: #e8ecf1;
+}
+
+.faq-question:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -2px;
+}
+
+.faq-icon {
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    margin-left: 1rem;
+}
+
+.faq-question[aria-expanded="true"] .faq-icon {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.faq-question[aria-expanded="true"] + .faq-answer {
+    max-height: 500px;
+    padding: 1.25rem 1.5rem;
+}
+
+.faq-answer p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #5a6c7d;
+    margin: 0;
+}
+
+/* =====================
+   Final CTA Section
+   ===================== */
+.final-cta {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, #4A90E2 0%, #7ED995 100%);
+    text-align: center;
+}
+
+.cta-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 2rem;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* =====================
    Footer
    ===================== */
 .footer {
     background: #fff;
-    padding: 2rem 1rem 1rem;
+    padding: 2rem 1rem 1.5rem;
     text-align: center;
     color: #7fa5aa;
-    font-size: 1rem;
+    font-size: 0.875rem;
     margin-top: auto;
     border-top: 1.5px solid #e2efe9;
 }
 
-.footer small {
-    display: block;
-    margin-top: 4px;
-    font-size: 0.93rem;
+.footer p {
+    margin: 0 0 0.75rem;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: #7fa5aa;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--color-primary);
+}
+
+.footer-links .separator {
     color: #b4cbc8;
 }
 
@@ -178,8 +496,6 @@ body {
    Responsive Improvements (Index)
    ===================== */
 @media (max-width: 1024px) {
-
-    /* Navbar padding less, hero and tagline slightly reduced */
     .navbar {
         padding: 0 1rem;
     }
@@ -187,11 +503,21 @@ body {
     .hero h1 {
         font-size: 2.2rem;
     }
+
+    .section-title {
+        font-size: 1.75rem;
+    }
+
+    .steps-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .medicines-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
 }
 
 @media (max-width: 768px) {
-
-    /* Stack navbar links vertically, hero padding reduced */
     .navbar {
         flex-direction: column;
         height: auto;
@@ -211,53 +537,180 @@ body {
     }
 
     .hero {
-        padding: 2.5rem 0.6rem 2rem;
+        padding: 2.5rem 1rem 2rem;
+        min-height: 50vh;
     }
 
     .hero h1 {
-        font-size: 1.7rem;
+        font-size: 1.8rem;
     }
 
-    .tagline {
+    .hero-text {
         font-size: 1rem;
     }
 
     .btn {
         font-size: 1rem;
-        padding: 10px 24px;
+        padding: 12px 32px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .purpose-section,
+    .how-it-works,
+    .supported-medicines,
+    .feedback-matters,
+    .faq-section,
+    .final-cta {
+        padding: 3rem 0;
+    }
+
+    .purpose-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .purpose-text {
+        font-size: 1rem;
+    }
+
+    .steps-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .medicines-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .feedback-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .feedback-text .section-title {
+        text-align: center;
+    }
+
+    .feedback-text p {
+        font-size: 1rem;
+    }
+
+    .faq-question {
+        font-size: 1rem;
+        padding: 1rem 1.25rem;
+    }
+
+    .cta-title {
+        font-size: 1.5rem;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cta-buttons .btn {
+        width: 100%;
+        max-width: 300px;
     }
 }
 
 @media (max-width: 480px) {
-
-    /* Further reduce hero paddings/text, buttons, stack everything */
     .navbar {
-        padding: 0 0.3rem;
+        padding: 0.5rem;
     }
 
     .logo {
-        font-size: 1.28rem;
+        font-size: 1.4rem;
     }
 
     .hero {
-        padding: 1.3rem 0.2rem 1rem;
+        padding: 2rem 0.75rem 1.5rem;
+        min-height: 40vh;
     }
 
     .hero h1 {
-        font-size: 1.15rem;
+        font-size: 1.5rem;
     }
 
-    .tagline {
+    .hero-text {
         font-size: 0.95rem;
     }
 
     .btn {
-        font-size: 0.98rem;
-        padding: 8px 12vw;
+        font-size: 0.95rem;
+        padding: 10px 24px;
+    }
+
+    .section-title {
+        font-size: 1.35rem;
+    }
+
+    .purpose-section,
+    .how-it-works,
+    .supported-medicines,
+    .feedback-matters,
+    .faq-section,
+    .final-cta {
+        padding: 2.5rem 0;
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
+
+    .purpose-text {
+        font-size: 0.95rem;
+    }
+
+    .step-card {
+        padding: 1.5rem;
+    }
+
+    .step-title {
+        font-size: 1.125rem;
+    }
+
+    .step-description {
+        font-size: 0.95rem;
+    }
+
+    .medicines-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .medicine-card {
+        padding: 1.25rem;
+    }
+
+    .feedback-text p {
+        font-size: 0.95rem;
+    }
+
+    .faq-question {
+        font-size: 0.95rem;
+        padding: 0.875rem 1rem;
+    }
+
+    .faq-answer p {
+        font-size: 0.9rem;
+    }
+
+    .cta-title {
+        font-size: 1.35rem;
     }
 
     .footer {
-        font-size: 0.89rem;
-        padding: 1.3rem 0.2rem 0.7rem;
+        font-size: 0.8rem;
+        padding: 1.5rem 0.75rem 1rem;
+    }
+
+    .footer-links {
+        font-size: 0.75rem;
     }
 }
