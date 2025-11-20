@@ -68,6 +68,20 @@ CLASS_TO_DB_LABEL = {
     'unliab-bioflu': 'Bioflu 10mg/2mg/500mg'
 }
 
+# Mapping from YOLO class labels to image filenames
+CLASS_TO_IMAGE = {
+    'alaxan_fr': 'alaxan_fr.png',
+    'biogesic-para': 'biogesic-para.png',
+    'cetirizine': 'cetirizine.png',
+    'fern-c': 'fern-c.png',
+    'ibuprofen-advil': 'ibuprofen-advil.png',
+    'kremil-s': 'kremil-s.png',
+    'loperamide diatabs': 'loperamide-diatabs.png',
+    'ritemed-para': 'ritemed-para.png',
+    'unilab-enervon': 'unilab-enervon.png',
+    'unliab-bioflu': 'unliab-bioflu.png'
+}
+
 # In-memory cache for medicine information
 MEDICINE_CACHE = {}
 
@@ -341,6 +355,10 @@ def predict():
         # Map YOLO class label to database Pill_Label
         pill_label = CLASS_TO_DB_LABEL.get(medicine_key)
 
+        # Get image filename for this medicine
+        image_filename = CLASS_TO_IMAGE.get(medicine_key)
+        image_url = f'/static/images/medicines/{image_filename}' if image_filename else None
+
         if pill_label:
             # Fetch medicine info from database
             medicine_info = get_medicine_info(pill_label)
@@ -370,6 +388,7 @@ def predict():
                     'legalStatus': medicine_info['legalStatus'],
                     'confidence': primary_detection.get('confidence', 0),
                     'detectionCount': len(detections),
+                    'imageUrl': image_url,
                     'timestamp': datetime.now().isoformat()
                 }
                 return jsonify(response)

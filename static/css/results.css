@@ -114,6 +114,36 @@ body {
   margin-top: 0;
   font-weight: 600;
 }
+
+/* ------ Medicine Header with Photo ------ */
+.medicine-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.medicine-photo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 12px;
+  border: 2px solid var(--color-accent);
+  background: #f9fdfb;
+  padding: 8px;
+  box-shadow: 0 4px 16px rgba(76, 201, 176, 0.15);
+  flex-shrink: 0;
+}
+
+.medicine-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.medicine-info h2 {
+  margin-bottom: 0.5rem;
+  word-wrap: break-word;
+}
 .result-section {
   background: #f6fff9;
   border-radius: 11px;
@@ -231,6 +261,19 @@ body {
   .results-main h1 { font-size: 1.15rem; }
   .results-card { padding: 0.6rem 0.09rem 0.6rem; }
   .result-section { font-size: 0.99rem; padding: 0.8rem 0.6rem; }
+
+  /* Mobile: Smaller photo */
+  .medicine-header {
+    gap: 1rem;
+  }
+  .medicine-photo {
+    width: 90px;
+    height: 90px;
+    padding: 6px;
+  }
+  .medicine-info h2 {
+    font-size: 1.1rem;
+  }
 }
 @media (max-width: 480px) {
   .navbar {
@@ -248,4 +291,17 @@ body {
     font-size: 0.8rem;
   }
   .footer { font-size: 0.88rem; padding: 1.1rem 0.05rem 0.7rem; }
+
+  /* Extra small screens: Even smaller photo */
+  .medicine-header {
+    gap: 0.75rem;
+  }
+  .medicine-photo {
+    width: 70px;
+    height: 70px;
+    padding: 4px;
+  }
+  .medicine-info h2 {
+    font-size: 1rem;
+  }
 }

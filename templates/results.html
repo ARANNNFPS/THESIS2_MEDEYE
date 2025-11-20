@@ -21,9 +21,14 @@
     <main class="results-main">
         <h1>Medicine Results</h1>
         <div class="results-card card">
-            <!-- Flask: Insert recognized medicine data here -->
-            <h2 id="medicineName">Medicine Name</h2>
-            <p id="manufacturer" style="color: #666; font-size: 0.9em; margin-top: -10px;">--</p>
+            <!-- Medicine Header with Photo -->
+            <div class="medicine-header">
+                <img id="medicinePhoto" src="" alt="Medicine Photo" class="medicine-photo" style="display: none;">
+                <div class="medicine-info">
+                    <h2 id="medicineName">Medicine Name</h2>
+                    <p id="manufacturer" style="color: #666; font-size: 0.9em; margin-top: -10px;">--</p>
+                </div>
+            </div>
 
             <div class="result-section">
                 <h3>Medical Use</h3>
@@ -70,6 +75,7 @@
 
                     // Update DOM elements with result data
                     const medicineNameEl = document.getElementById('medicineName');
+                    const medicinePhotoEl = document.getElementById('medicinePhoto');
                     const manufacturerEl = document.getElementById('manufacturer');
                     const usageEl = document.getElementById('usage');
                     const dosageEl = document.getElementById('dosage');
@@ -80,6 +86,13 @@
 
                     if (medicineNameEl) {
                         medicineNameEl.textContent = result.medicine || 'Unknown Medicine';
+                    }
+
+                    // Display medicine photo if available
+                    if (medicinePhotoEl && result.imageUrl) {
+                        medicinePhotoEl.src = result.imageUrl;
+                        medicinePhotoEl.style.display = 'block';
+                        medicinePhotoEl.alt = result.medicine || 'Medicine Photo';
                     }
 
                     // Show manufacturer if available
