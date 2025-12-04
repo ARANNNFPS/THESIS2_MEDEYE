@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedEye | About</title>
+    <title>MediWeb | About</title>
     <link rel="stylesheet" href="/static/css/about.css">
 </head>
 
 <body>
     <!-- Navbar -->
     <nav class="navbar">
-        <div class="logo">MedEye</div>
+        <div class="logo">MediWeb</div>
         <ul class="nav-links">
             <li><a href="/">Home</a></li>
             <li><a href="/scan">Scan</a></li>
@@ -19,35 +19,32 @@
         </ul>
     </nav>
     <main class="about-main">
-        <h1>About MedEye</h1>
+        <h1>About MediWeb</h1>
         <section class="about-section card">
             <h2>Mission</h2>
-            <p>MedEye is committed to providing fast, accessible, and reliable medicine identification. Our goal is to
+            <p>MediWeb is committed to providing fast, accessible, and reliable medicine identification. Our goal is to
                 bridge the knowledge gap for patients, caregivers, and health professionals through instant recognition
                 and clear, trustworthy information.</p>
         </section>
         <section class="about-section card">
             <h2>How It Works</h2>
-            <p>Using advanced deep learning and computer vision integrated into our backend Flask API, MedEye analyzes
+            <p>Using advanced deep learning and computer vision integrated into our backend Flask API, MediWeb analyzes
                 images of pills or packaging and returns essential information. The current web platform is
-                intentionally designed as a lightweight demonstration—showing only a fraction of MedEye’s full
+                intentionally designed as a lightweight demonstration—showing only a fraction of MediWeb's full
                 capabilities. Unlike the mobile application, which performs three layers of validation (YOLO detection,
                 OCR extraction, and a heuristic verification algorithm), the web version provides a simplified preview
-                so users can test and experience a portion of the system’s power..</p>
+                so users can test and experience a portion of the system's power..</p>
         </section>
         <section class="about-section card credits">
             <h2>Developed By</h2>
             <ul>
                 <li>Aries Ivan Garibay — Lead Software Engineer & Machine Learning Developer</li>
-                <li>Apollo I. Baldeo — Software Engineer & Lead Technical Documentation Specialist</li>
-                <li>Lousanne Kaizz D. Laga — Data Annotation Specialist & Supporting Technical Documentation Specialist
-                </li>
-                <!-- Add additional credits as needed -->
+                <li>Antoinette Barcenas — Software Engineer & Lead Technical Documentation Specialist</li>
             </ul>
         </section>
     </main>
     <footer class="footer">
-        <p>&copy; 2025 MedEye. All rights reserved.</p>
+        <p>&copy; 2025 MediWeb. All rights reserved.</p>
         <small>For informational purposes only. Always consult a healthcare professional.</small>
     </footer>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
